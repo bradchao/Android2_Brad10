@@ -10,10 +10,15 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
+import android.view.View;
+import android.widget.Toast;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 
 public class MainActivity extends AppCompatActivity {
+    private File sdroot, approot;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,10 +61,46 @@ public class MainActivity extends AppCompatActivity {
     private void init(){
         String state = Environment.getExternalStorageState();
         Log.v("brad", state);   // mounted or removed
-        File sdroot = Environment.getExternalStorageDirectory();
+        sdroot = Environment.getExternalStorageDirectory();
         Log.v("brad", sdroot.getAbsolutePath());
-
+        approot = new File(sdroot,
+                "Android/data/"+getPackageName());
+        if (!approot.exists()){
+            if (approot.mkdirs()){
+                Log.v("brad", "create OK");
+            }else{
+                Log.v("brad", "create XX");
+            }
+        }else{
+            Log.v("brad", "exist");
+        }
     }
 
+
+    public void test1(View view) {
+        try {
+            FileOutputStream fout =
+                    new FileOutputStream(sdroot.getAbsolutePath()+"/001.txt");
+            fout.write("Hello, World".getBytes());
+            fout.flush();
+            fout.close();
+            Toast.makeText(this, "OK", Toast.LENGTH_SHORT).show();
+        } catch (Exception e) {
+            Log.v("brad", e.toString());
+        }
+
+    }
+    public void test2(View view) {
+        try {
+            FileOutputStream fout =
+                    new FileOutputStream(approot.getAbsolutePath()+"/001.txt");
+            fout.write("Hello, World".getBytes());
+            fout.flush();
+            fout.close();
+            Toast.makeText(this, "OK", Toast.LENGTH_SHORT).show();
+        } catch (Exception e) {
+            Log.v("brad", e.toString());
+        }
+    }
 
 }

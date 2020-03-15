@@ -13,9 +13,12 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.InputStreamReader;
 
 public class MainActivity extends AppCompatActivity {
     private File sdroot, approot;
@@ -65,6 +68,8 @@ public class MainActivity extends AppCompatActivity {
         Log.v("brad", sdroot.getAbsolutePath());
         approot = new File(sdroot,
                 "Android/data/"+getPackageName());
+        Log.v("brad", approot.getAbsolutePath());
+
         if (!approot.exists()){
             if (approot.mkdirs()){
                 Log.v("brad", "create OK");
@@ -103,4 +108,30 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public void test3(View view) {
+        try{
+            FileInputStream fin =
+                    new FileInputStream(sdroot.getAbsolutePath()+"/001.txt");
+            BufferedReader reader =
+                    new BufferedReader(new InputStreamReader(fin));
+            String line = reader.readLine();
+            fin.close();
+            Log.v("brad", line);
+        }catch (Exception e){
+            Log.v("brad", e.toString());
+        }
+    }
+    public void test4(View view) {
+        try{
+            FileInputStream fin =
+                    new FileInputStream(approot.getAbsolutePath()+"/001.txt");
+            BufferedReader reader =
+                    new BufferedReader(new InputStreamReader(fin));
+            String line = reader.readLine();
+            fin.close();
+            Log.v("brad", line);
+        }catch (Exception e){
+            Log.v("brad", e.toString());
+        }
+    }
 }

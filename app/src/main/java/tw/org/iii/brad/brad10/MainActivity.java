@@ -134,4 +134,16 @@ public class MainActivity extends AppCompatActivity {
             Log.v("brad", e.toString());
         }
     }
+
+    public void test5(View view) {
+        File musicDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC);
+        if (musicDir.exists() && musicDir.isDirectory()){
+            File[] musics = musicDir.listFiles();
+            for (File music : musics){
+                Log.v("brad", music.getAbsolutePath());
+            }
+        }
+
+
+    }
 }
